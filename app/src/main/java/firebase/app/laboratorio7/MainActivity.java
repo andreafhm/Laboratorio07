@@ -8,13 +8,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
         TextView gx, gy, gz, mx, my, mz, orientacion;
         Sensor giroscopio, mangnetometro;
         SensorManager sm;
+        float prox=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         giroscopio = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sm.registerListener( this,mangnetometro,SensorManager.SENSOR_DELAY_NORMAL);
         sm.registerListener( this,giroscopio,SensorManager.SENSOR_DELAY_NORMAL);
+        sm.registerListener( this,sm.getDefaultSensor(Sensor.TYPE_PROXIMITY),SensorManager.SENSOR_DELAY_NORMAL);
+        sm.registerListener( this,sm.getDefaultSensor(Sensor.TYPE_LIGHT),SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -69,6 +76,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     orientacion.setText("Orientación: Mirando hacia arriba");
                 }
                 break;
+            case Sensor.TYPE_PROXIMITY:
+                prox = event.values[0];
+                break;
+            case Sensor.TYPE_LIGHT:
+                if(event.values[0] <15 && prox == 0){
+                    Log.e("En el bolsillo","bolsillo");
+                    try {
+                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                        r.play();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
             default:
                 break;
 
