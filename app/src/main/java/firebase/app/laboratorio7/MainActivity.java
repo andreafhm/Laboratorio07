@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Sensor giroscopio, mangnetometro;
         SensorManager sm;
         float prox=0;
+        int veces = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
             case Sensor.TYPE_PROXIMITY:
                 prox = event.values[0];
+                if(prox == 5){
+                    veces =0;
+                }
                 break;
             case Sensor.TYPE_LIGHT:
                 if(event.values[0] <15 && prox == 0){
                     Log.e("En el bolsillo","bolsillo");
                     try {
-                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                        r.play();
+                        sonar();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -101,5 +103,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+    public void sonar(){
+        if (veces ==0) {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+            veces++;
+        }
     }
 }
