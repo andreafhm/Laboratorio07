@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gx = (TextView) findViewById(R.id.Gx);
-        gy = (TextView) findViewById(R.id.Gy);
-        gz = (TextView) findViewById(R.id.Gz);
+        gx = findViewById(R.id.Gx);
+        gy = findViewById(R.id.Gy);
+        gz = findViewById(R.id.Gz);
 
-        mx = (TextView) findViewById(R.id.Mx);
-        my = (TextView) findViewById(R.id.My);
-        mz = (TextView) findViewById(R.id.Mz);
+        mx = findViewById(R.id.Mx);
+        my = findViewById(R.id.My);
+        mz = findViewById(R.id.Mz);
 
-        orientacion = (TextView) findViewById(R.id.orientacion);
+        orientacion = findViewById(R.id.orientacion);
 
 
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
